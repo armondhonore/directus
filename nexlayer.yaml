@@ -1,0 +1,30 @@
+application:
+  name: directus
+  pods:
+    - name: app
+      image: directus/directus:latest
+      path: /
+      servicePorts:
+        - 8055
+      vars:
+        SECRET: "secret-changeme"
+        DB_CLIENT: pg
+        DB_HOST: postgres.pod
+        DB_PORT: "5432"
+        DB_DATABASE: directus
+        DB_USER: directus
+        DB_PASSWORD: directus
+        ADMIN_EMAIL: admin@example.com
+        ADMIN_PASSWORD: "admin-changeme"
+    - name: postgres
+      image: postgres:16
+      servicePorts:
+        - 5432
+      vars:
+        POSTGRES_DB: directus
+        POSTGRES_USER: directus
+        POSTGRES_PASSWORD: directus
+      volumes:
+        - name: db
+          mountPath: /var/lib/postgresql
+          size: 5Gi
